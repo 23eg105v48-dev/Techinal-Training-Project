@@ -50,20 +50,23 @@ public class ApiController {
         this.chatbotService = chatbotService;
     }
 
-    @GetMapping("/api/dashboard")
-    public ResponseEntity<?> dashboard(HttpSession session) {
-        long userId = userId(session);
-        UserStats stats = databaseService.getUserStats(userId);
-        SocialAccounts socialAccounts = databaseService.getSocialAccounts(userId);
-        List<ChatMessage> recentChats = databaseService.getChatHistory(userId, 5);
+    
+@GetMapping("/api/dashboard")
+public ResponseEntity<?> dashboard(HttpSession session) {
+    long userId = userId(session);
+    UserStats stats = databaseService.getUserStats(userId);
+    SocialAccounts socialAccounts = databaseService.getSocialAccounts(userId);
+    List<ChatMessage> recentChats = databaseService.getChatHistory(userId, 5);
 
-        return ResponseEntity.ok(
-                Map.of(
-                        "userName", session.getAttribute("user_name"),
-                        "stats", stats,
-                        "socialAccounts", socialAccounts,
-                        "recentChats", recentChats));
-    }
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("userName", session.getAttribute("user_name") != null
+            ? session.getAttribute("user_name") : "User");
+    result.put("stats", stats);
+    result.put("socialAccounts", socialAccounts);
+    result.put("recentChats", recentChats);
+
+    return ResponseEntity.ok(result);
+}
 
     @PostMapping("/generate-campaign")
     public ResponseEntity<?> generateCampaign(HttpSession session, @RequestBody Map<String, String> body) {
