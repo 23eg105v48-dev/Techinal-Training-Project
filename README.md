@@ -1,4 +1,3 @@
-# Techinal-Training-Project
 # MarketAI Suite
 
 AI-powered marketing and sales assistant: campaign generation, pitch writing, lead scoring, marketing chatbot, and social analytics UI.
